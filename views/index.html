@@ -1,0 +1,23 @@
+{{ extend './_layouts/layout.html' }}
+
+{{ block 'title' }}
+首页
+{{ /block }}
+
+{{ block 'head' }}
+<style>
+    body {
+        background-color: skyblue;
+    }
+</style>
+{{ /block }}
+
+{{ block 'content' }}
+<h1>{{ msg }}</h1>
+{{ /block }}
+
+{{ block 'script' }}
+<script type="text/javascript">
+    window.alert('index 页面自己的 js 脚本')
+</script>
+{{ /block }}
