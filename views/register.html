@@ -51,20 +51,33 @@
                 type: 'post',
                 data: formData,
                 dataType: 'json',
-                success: function (data) {
-                    var err_code = data.err_code
+                success: data => {
+                    const err_code = data.err_code
                     if (err_code === 0) {
-                        // window.alert('注册成功！')
-                        // 服务端重定向针对异步请求无效
+                        window.alert(data.message)
+                        // 服务端重定向针对异步请求无效 所以需要在客户端进行跳转
                         window.location.href = '/'
                     } else if (err_code === 1) {
-                        window.alert('邮箱已存在！')
-                    } else if (err_code === 2) {
-                        window.alert('昵称已存在！')
+                        window.alert(data.message)
                     } else if (err_code === 500) {
-                        window.alert('服务器忙，请稍后重试！')
+                        window.alert(data.message)
                     }
                 }
+                // success: function (data) {
+                //     console.log(data)
+                //     var err_code = data.err_code
+                //     if (err_code === 0) {
+                //         // window.alert('注册成功！')
+                //         // 服务端重定向针对异步请求无效 所以需要在客户端进行跳转
+                //         window.location.href = '/'
+                //     } else if (err_code === 1) {
+                //         window.alert('邮箱已存在！')
+                //     } else if (err_code === 2) {
+                //         window.alert('昵称已存在！')
+                //     } else if (err_code === 500) {
+                //         window.alert('服务器忙，请稍后重试！')
+                //     }
+                // }
             })
         })
     </script>
