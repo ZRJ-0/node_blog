@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Document</title>
+    <title>{{ title }}</title>
     <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.css">
     <link rel="stylesheet" href="/public/css/login.css">
 </head>
@@ -11,6 +11,7 @@
 <body>
     <div class="main">
         <div class="header">
+            <h1>{{ err_msg }}</h1>
             <a href="/">
                 <img src="/public/img/logo3.png" alt="">
             </a>
@@ -25,15 +26,22 @@
         <form id="register_form" method="post" action="/register">
             <div class="form-group">
                 <label for="email">邮箱</label>
-                <input type="email" class="form-control" id="email" name="email" placeholder="Email" autofocus>
+                <!-- form&&form.email 的判断 在没有email数据的时候  就不显示 存在的时候
+                     刷新页面   也可以保留原有的信息 -->
+                <input type="email" class="form-control" value="{{ form&&form.email }}" id="email" name="email"
+                    placeholder="Email" autofocus required="required" oninvalid="setCustomValidity('请输入您的邮箱')"
+                    oninput="setCustomValidity('')">
             </div>
             <div class="form-group">
                 <label for="nickname">昵称</label>
-                <input type="text" class="form-control" id="nickname" name="nickname" placeholder="Nickname">
+                <input type="text" class="form-control" value="{{ form&&form.nickname }}" id="nickname" name="nickname"
+                    placeholder="Nickname" required="required" oninvalid="setCustomValidity('请输入您的姓名');"
+                    oninput="setCustomValidity('')">
             </div>
             <div class="form-group">
                 <label for="password">密码</label>
-                <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+                <input type="password" class="form-control" id="password" name="password" placeholder="Password"
+                    required="required" oninvalid="setCustomValidity('请输入您的密码');" oninput="setCustomValidity('')">
             </div>
             <button type="submit" class="btn btn-success btn-block">注册</button>
         </form>
@@ -43,43 +51,43 @@
     </div>
     <script src="/node_modules/jquery/dist/jquery.js"></script>
     <script>
-        $('#register_form').on('submit', function (e) {
-            e.preventDefault()
-            var formData = $(this).serialize()
-            $.ajax({
-                url: '/register',
-                type: 'post',
-                data: formData,
-                dataType: 'json',
-                success: data => {
-                    const err_code = data.err_code
-                    if (err_code === 0) {
-                        window.alert(data.message)
-                        // 服务端重定向针对异步请求无效 所以需要在客户端进行跳转
-                        window.location.href = '/'
-                    } else if (err_code === 1) {
-                        window.alert(data.message)
-                    } else if (err_code === 500) {
-                        window.alert(data.message)
-                    }
-                }
-                // success: function (data) {
-                //     console.log(data)
-                //     var err_code = data.err_code
-                //     if (err_code === 0) {
-                //         // window.alert('注册成功！')
-                //         // 服务端重定向针对异步请求无效 所以需要在客户端进行跳转
-                //         window.location.href = '/'
-                //     } else if (err_code === 1) {
-                //         window.alert('邮箱已存在！')
-                //     } else if (err_code === 2) {
-                //         window.alert('昵称已存在！')
-                //     } else if (err_code === 500) {
-                //         window.alert('服务器忙，请稍后重试！')
-                //     }
-                // }
-            })
-        })
+        // $('#register_form').on('submit', function (e) {
+        //     e.preventDefault()
+        //     var formData = $(this).serialize()
+        //     $.ajax({
+        //         url: '/register',
+        //         type: 'post',
+        //         data: formData,
+        //         dataType: 'json',
+        //         success: data => {
+        //             const err_code = data.err_code
+        //             if (err_code === 0) {
+        //                 window.alert(data.message)
+        //                 // 服务端重定向针对异步请求无效 所以需要在客户端进行跳转
+        //                 window.location.href = '/'
+        //             } else if (err_code === 1) {
+        //                 window.alert(data.message)
+        //             } else if (err_code === 500) {
+        //                 window.alert(data.message)
+        //             }
+        //         }
+        //         // success: function (data) {
+        //         //     console.log(data)
+        //         //     var err_code = data.err_code
+        //         //     if (err_code === 0) {
+        //         //         // window.alert('注册成功！')
+        //         //         // 服务端重定向针对异步请求无效 所以需要在客户端进行跳转
+        //         //         window.location.href = '/'
+        //         //     } else if (err_code === 1) {
+        //         //         window.alert('邮箱已存在！')
+        //         //     } else if (err_code === 2) {
+        //         //         window.alert('昵称已存在！')
+        //         //     } else if (err_code === 500) {
+        //         //         window.alert('服务器忙，请稍后重试！')
+        //         //     }
+        //         // }
+        //     })
+        // })
     </script>
 </body>
 
