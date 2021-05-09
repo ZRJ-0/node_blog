@@ -29,4 +29,24 @@ app.use(session({
 // 把路由挂在到 app 中
 app.use(router)
 
+// 配置一个处理404页面的中间件  此处只有当前面的中间件都没有被执行的时候 才会执行这个最后的中间件
+app.use((req, res, next) => {
+    res.render('404.html', {
+        title: '错误页面'
+    })
+})
+
+/*
+ * 配置一个 全局错误处理的中间件  
+ * 为什么 写在路由 app.use(router) 的后方：
+ * 因为 return在路由中执行 而next(err)则是跳转到下一个中间件 下一个与之对应的中间件就是当前存在四个参数的err
+ */
+app.use((err, req, res, next) => {
+    res.status(500).json({
+        err_code: 500,
+        message: err.message
+    })
+})
+
+
 app.listen(8080, () => console.log('Server is running on http://127.0.0.1:8080'))

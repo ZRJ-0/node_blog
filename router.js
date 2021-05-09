@@ -3,29 +3,30 @@ const md5 = require('blueimp-md5')
 const router = express.Router()
 const User = require('./models/user')
 
-router.get('/', (req, res) => {
+router.get('/', (req, res, next) => {
     res.render('index.html', {
         user: req.session.user
     })
 })
 
-router.get('/login', (req, res) => {
+router.get('/login', (req, res, next) => {
     res.render('login.html', {
         title: '登录页面'
     })
 })
 
-router.post('/login', (req, res) => {
+router.post('/login', (req, res, next) => {
     const body = req.body
     User.findOne({
         email: body.email,
         password: md5(md5(body.password))
     }, (err, user) => {
         if (err)
-            return res.status(500).json({
-                err_code: 500,
-                message: err.message
-            })
+            // return res.status(500).json({
+            //     err_code: 500,
+            //     message: err.message
+            // })
+            return next(err)
         // 如果头像和密码匹配   则user是查询到的用户对象    否则是null
         if (!user) {
             return res.status(200).json({
@@ -44,13 +45,13 @@ router.post('/login', (req, res) => {
     })
 })
 
-router.get('/register', (req, res) => {
+router.get('/register', (req, res, next) => {
     res.render('register.html', {
         title: '注册页面'
     })
 })
 
-router.post('/register', (req, res) => {
+router.post('/register', (req, res, next) => {
     const body = req.body
     User.findOne({
         $or: [{
@@ -59,12 +60,12 @@ router.post('/register', (req, res) => {
             nickname: body.nickname
         }]
     }, (err, data) => {
-        if (err) {
-            return res.status(500).json({
-                success: false,
-                message: 'Server Error!!!'
-            })
-        }
+        if (err)
+            // return res.status(500).json({
+            //     success: false,
+            //     message: 'Server Error!!!'
+            // })
+            return next(err)
         if (data) {
             // 邮箱或者昵称已存在
             return res.status(200).json({
@@ -83,10 +84,11 @@ router.post('/register', (req, res) => {
         body.password = md5(md5(body.password))
         new User(body).save((err, user) => {
             if (err) {
-                return res.status(500).json({
-                    err_code: 500,
-                    message: 'Internal Error.'
-                })
+                // return res.status(500).json({
+                //     err_code: 500,
+                //     message: 'Internal Error.'
+                // })
+                return next(err)
                 // return res.render('register.html', {
                 //     err_msg: 'Internal Error.',
                 //     form: body
@@ -112,7 +114,7 @@ router.post('/register', (req, res) => {
     })
 })
 
-router.get('/logout', (req, res) => {
+router.get('/logout', (req, res, next) => {
     /*
      * 将 req.session.user 这个对象删除掉
      * 也可以使用 req.session.user = null  但此时这个键还存在只是值变为null了 不如直接 delete
