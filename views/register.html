@@ -11,7 +11,7 @@
 <body>
     <div class="main">
         <div class="header">
-            <h1>{{ err_msg }}</h1>
+            <!-- <h1>{{ err_msg }}</h1> -->
             <a href="/">
                 <img src="/public/img/logo3.png" alt="">
             </a>
@@ -28,15 +28,14 @@
                 <label for="email">邮箱</label>
                 <!-- form&&form.email 的判断 在没有email数据的时候  就不显示 存在的时候
                      刷新页面   也可以保留原有的信息 -->
-                <input type="email" class="form-control" value="{{ form&&form.email }}" id="email" name="email"
-                    placeholder="Email" autofocus required="required" oninvalid="setCustomValidity('请输入您的邮箱')"
-                    oninput="setCustomValidity('')">
+                <input type="email" class="form-control" value="" id="email" name="email" placeholder="Email" autofocus
+                    required="required" oninvalid="setCustomValidity('请输入您的邮箱')" oninput="setCustomValidity('')">
             </div>
             <div class="form-group">
                 <label for="nickname">昵称</label>
-                <input type="text" class="form-control" value="{{ form&&form.nickname }}" id="nickname" name="nickname"
-                    placeholder="Nickname" required="required" oninvalid="setCustomValidity('请输入您的姓名');"
-                    oninput="setCustomValidity('')">
+                <!-- value="{{ form&&form.nickname }}" -->
+                <input type="text" class="form-control" value="" id="nickname" name="nickname" placeholder="Nickname"
+                    required="required" oninvalid="setCustomValidity('请输入您的姓名');" oninput="setCustomValidity('')">
             </div>
             <div class="form-group">
                 <label for="password">密码</label>
@@ -51,49 +50,49 @@
     </div>
     <script src="/node_modules/jquery/dist/jquery.js"></script>
     <script>
-        // $('#register_form').on('submit', function (e) {
-        //     e.preventDefault()
-        //     var formData = $(this).serialize()
-        //     $.ajax({
-        //         url: '/register',
-        //         type: 'post',
-        //         data: formData,
-        //         dataType: 'json',
-        //         success: data => {
-        //             const err_code = data.err_code
-        //             if (err_code === 0) {
-        //                 window.alert(data.message)
-        //                 // 服务端重定向针对异步请求无效 所以需要在客户端进行跳转
-        //                 window.location.href = '/'
-        //             } else if (err_code === 1) {
-        //                 window.alert(data.message)
-        //             } else if (err_code === 500) {
-        //                 window.alert(data.message)
-        //             }
-        //         }
-        //         // success: function (data) {
-        //         //     console.log(data)
-        //         //     var err_code = data.err_code
-        //         //     if (err_code === 0) {
-        //         //         // window.alert('注册成功！')
-        //         //         // 服务端重定向针对异步请求无效 所以需要在客户端进行跳转
-        //         //         window.location.href = '/'
-        //         //     } else if (err_code === 1) {
-        //         //         window.alert('邮箱已存在！')
-        //         //     } else if (err_code === 2) {
-        //         //         window.alert('昵称已存在！')
-        //         //     } else if (err_code === 500) {
-        //         //         window.alert('服务器忙，请稍后重试！')
-        //         //     }
-        //         // }
-        //     })
-        // })
+        $('#register_form').on('submit', function (e) {
+            e.preventDefault()
+            var formData = $(this).serialize()
+            $.ajax({
+                url: '/register',
+                type: 'post',
+                data: formData,
+                dataType: 'json',
+                success: data => {
+                    const err_code = data.err_code
+                    if (err_code === 0) {
+                        window.alert(data.message)
+                        // 服务端重定向针对异步请求无效 所以需要在客户端进行跳转
+                        window.location.href = '/'
+                    } else if (err_code === 1) {
+                        window.alert(data.message)
+                    } else if (err_code === 500) {
+                        window.alert(data.message)
+                    }
+                }
+                // success: function (data) {
+                //     console.log(data)
+                //     var err_code = data.err_code
+                //     if (err_code === 0) {
+                //         // window.alert('注册成功！')
+                //         // 服务端重定向针对异步请求无效 所以需要在客户端进行跳转
+                //         window.location.href = '/'
+                //     } else if (err_code === 1) {
+                //         window.alert('邮箱已存在！')
+                //     } else if (err_code === 2) {
+                //         window.alert('昵称已存在！')
+                //     } else if (err_code === 500) {
+                //         window.alert('服务器忙，请稍后重试！')
+                //     }
+                // }
+            })
+        })
     </script>
 </body>
 
 </html>
 
-<!-- 
+<!--
   领过苹果的不能再领了
   老师发苹果
   HTTP 是无状态的
@@ -117,4 +116,4 @@
   钥匙是服务器给你的，所以这就很安全了，不太容易伪造出来。
   这个时候我们就可以包一些敏感的数据保存到服务端。
   客户端只需要拿着这把钥匙就可以了。
- -->
+-->
